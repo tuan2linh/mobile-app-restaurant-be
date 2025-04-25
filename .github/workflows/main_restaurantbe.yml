@@ -31,17 +31,11 @@ jobs:
 
       - name: Prepare for deployment
         run: |
-          # Tạo file .env cho production trực tiếp
           mkdir -p deployment
           cp -r dist package.json package-lock.json deployment/
           
-          # Tạo file .env mới cho production
           cat > deployment/.env << EOL
-          DB_HOST=${{ secrets.DB_HOST || 'localhost' }}
-          DB_PORT=${{ secrets.DB_PORT || '3307' }}
-          DB_USERNAME=${{ secrets.DB_USERNAME || 'root' }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD || 'secret' }}
-          DB_NAME=${{ secrets.DB_NAME || 'restaurant' }}
+          DATABASE_URL=${{ secrets.AZURE_MYSQL_CONNECTIONSTRING }}
           PORT=8080
           NODE_ENV=production
           EOL
