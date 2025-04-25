@@ -31,10 +31,22 @@ jobs:
 
       - name: Prepare for deployment
         run: |
-          # Chỉ nén các file cần thiết cho production
+          # Tạo file .env cho production trực tiếp
           mkdir -p deployment
-          cp -r dist package.json package-lock.json .env.example deployment/
-          cd deployment && npm ci --production
+          cp -r dist package.json package-lock.json deployment/
+          
+          # Tạo file .env mới cho production
+          cat > deployment/.env << EOL
+          DB_HOST=${{ secrets.DB_HOST || 'localhost' }}
+          DB_PORT=${{ secrets.DB_PORT || '3307' }}
+          DB_USERNAME=${{ secrets.DB_USERNAME || 'root' }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD || 'secret' }}
+          DB_NAME=${{ secrets.DB_NAME || 'restaurant' }}
+          PORT=8080
+          NODE_ENV=production
+          EOL
+          
+          cd deployment && npm ci --omit=dev
           cd .. && zip -r release.zip deployment/*
 
       - name: Upload artifact for deployment job
