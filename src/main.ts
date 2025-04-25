@@ -8,6 +8,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:4200', 'https://restaurant-manager-chm11fic8-ltw-92af30ff.vercel.app/'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Restaurant Table API')
     .setDescription('API quản lý bàn nhà hàng')
