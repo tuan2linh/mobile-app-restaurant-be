@@ -9,8 +9,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:4200', 'https://restaurant-manager-chm11fic8-ltw-92af30ff.vercel.app/'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: '*',  // Cho phép tất cả các origin trong quá trình phát triển
+    // Hoặc liệt kê cụ thể:
+    // origin: ['http://localhost:3000', 'http://localhost:4200', 'https://restaurant-manager-chm11fic8-ltw-92af30ff.vercel.app', 'https://your-production-frontend.com'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
   });
 
