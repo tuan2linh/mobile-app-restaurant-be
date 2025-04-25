@@ -11,17 +11,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     database: process.env.DB_NAME || 'restaurant',
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     synchronize: process.env.NODE_ENV !== 'production',
-    ...(process.env.DB_HOST?.includes('azure.com') ? {
-      ssl: {
-        rejectUnauthorized: false
-      },
-      extra: {
-        ssl: {
-          rejectUnauthorized: false
-        }
-      }
-    } : {}),
-    logging: process.env.NODE_ENV !== 'production',
-    retryAttempts: 5,
-    retryDelay: 3000
+    ssl: {
+      rejectUnauthorized: false, // Azure yêu cầu SSL nhưng ko cần verify
+  },
 };
