@@ -11,4 +11,13 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     database: process.env.DB_NAME || 'restaurant',
     entities: [__dirname + '/../**/*.entity.{js,ts}'], // Add this line
     synchronize: true, // Set to false in production
+    ssl: {
+        // Enable SSL for secure connection
+        rejectUnauthorized: true,
+    },
+    extra: {
+        ssl: {
+            rejectUnauthorized: false // This might be needed for Azure MySQL
+        }
+    }
 };
