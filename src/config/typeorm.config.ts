@@ -3,19 +3,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-  // Nếu có chuỗi kết nối URL, dùng nó
-  ...(process.env.DATABASE_URL ? {
-    url: process.env.DATABASE_URL,
-    type: 'mysql',
-    entities: [__dirname + '/../**/*.entity.{js,ts}'],
-    synchronize: process.env.NODE_ENV !== 'production',
-    ssl: {
-      rejectUnauthorized: false
-    },
-    logging: process.env.NODE_ENV !== 'production',
-    retryAttempts: 5,
-    retryDelay: 3000
-  } : {
     // Cấu hình cũ nếu không có DATABASE_URL
     type: 'mysql',
     host: process.env.DB_HOST || 'localhost',
@@ -28,5 +15,4 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     ssl: process.env.NODE_ENV === 'production' ? {
       rejectUnauthorized: false
     } : undefined
-  })
 };
