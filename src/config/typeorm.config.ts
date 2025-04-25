@@ -3,16 +3,25 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-    // Cấu hình cũ nếu không có DATABASE_URL
     type: 'mysql',
     host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT) || 3307,
+    port: Number(process.env.DB_PORT) || 3306,
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || 'secret',
     database: process.env.DB_NAME || 'restaurant',
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     synchronize: process.env.NODE_ENV !== 'production',
-    ssl: process.env.NODE_ENV === 'production' ? {
-      rejectUnauthorized: false
-    } : undefined
+    ...(process.env.DB_HOST?.includes('azure.com') ? {
+      ssl: {
+        rejectUnauthorized: false
+      },
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
+    } : {}),
+    logging: process.env.NODE_ENV !== 'production',
+    retryAttempts: 5,
+    retryDelay: 3000
 };
