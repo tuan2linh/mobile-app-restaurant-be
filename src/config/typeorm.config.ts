@@ -13,7 +13,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     synchronize: true, // Set to false in production
     ssl: {
         // Enable SSL for secure connection
-        rejectUnauthorized: true,
+        rejectUnauthorized: false // This might be needed for Azure MySQL,
     },
     extra: {
         ssl: {
