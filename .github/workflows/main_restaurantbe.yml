@@ -32,11 +32,14 @@ jobs:
 
       - name: Clean up for deployment
         run: |
-          rm -rf node_modules
-          npm ci --only=production
+          mkdir -p deploy-package/dist
+          cp -r dist/* deploy-package/dist/
+          cp package.json package-lock.json deploy-package/
+          cd deploy-package && npm ci --only=production --no-audit
 
-      - name: Zip artifact for deployment
-        run: zip -r release.zip ./* -x "*.git*" -x "test/*"
+      - name: Zip artifact for deployment (chỉ bao gồm file cần thiết)
+        working-directory: deploy-package
+        run: zip -r ../release.zip ./*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -70,10 +73,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_79071CCE9D9A4670A380035E599B0614 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CCF48A6F22B14CB686583440DF2AFC70 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'restaurantbe'
           slot-name: 'Production'
-          package: .
+          package: release.zip
