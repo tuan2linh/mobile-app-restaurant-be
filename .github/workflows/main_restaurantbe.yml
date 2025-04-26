@@ -94,6 +94,7 @@ jobs:
           fetch-depth: 0
       
       - name: Automated Version Bump
+        id: version-bump
         uses: phips28/gh-action-bump-version@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -104,6 +105,11 @@ jobs:
           patch-wording: 'fix,patch'
           rc-wording: 'rc,beta,alpha'
           
+      - name: Create Git tag
+        run: |
+          git tag ${{ steps.version-bump.outputs.newTag }}
+          git push origin ${{ steps.version-bump.outputs.newTag }}
+          
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
@@ -112,3 +118,5 @@ jobs:
           tag_name: ${{ steps.version-bump.outputs.newTag }}
           name: Release ${{ steps.version-bump.outputs.newTag }}
           generate_release_notes: true
+          draft: false
+          prerelease: false
