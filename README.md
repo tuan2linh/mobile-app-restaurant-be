@@ -96,8 +96,15 @@ $ npm run start:prod
 ## API Documentation
 
 Sau khi khởi chạy, truy cập Swagger UI để xem tài liệu API:
+
+### Development
 ```
 http://localhost:8080/api
+```
+
+### Production
+```
+https://restaurantbe.azurewebsites.net/api
 ```
 
 ### Các nhóm API chính:

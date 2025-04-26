@@ -107,8 +107,12 @@ jobs:
           
       - name: Create Git tag
         run: |
-          git tag ${{ steps.version-bump.outputs.newTag }}
-          git push origin ${{ steps.version-bump.outputs.newTag }}
+          if ! git rev-parse "${{ steps.version-bump.outputs.newTag }}" >/dev/null 2>&1; then
+            git tag ${{ steps.version-bump.outputs.newTag }}
+            git push origin ${{ steps.version-bump.outputs.newTag }}
+          else
+            echo "Tag ${{ steps.version-bump.outputs.newTag }} already exists, skipping tag creation"
+          fi
           
       - name: Create Release
         uses: softprops/action-gh-release@v1
