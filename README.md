@@ -5,7 +5,9 @@
     <br/>
     <a href="https://github.com/tuan2linh/mobile-app-restaurant-be/releases">
       <img src="https://img.shields.io/github/package-json/v/tuan2linh/mobile-app-restaurant-be" alt="Version">
-    </a>  
+    </a>
+    <br/>
+    <a href="https://restaurantbe.azurewebsites.net/api">API Documentation Demo</a>
   </p>
 </p>
 
