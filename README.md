@@ -1,6 +1,12 @@
 <p align="center">
   <h1 align="center">Restaurant Manager API</h1>
-  <p align="center">REST API quản lý bàn và khu vực nhà hàng với NestJS</p>
+  <p align="center">
+    REST API quản lý bàn và khu vực nhà hàng với NestJS
+    <br/>
+    <a href="https://github.com/username/restaurant-manager/releases">
+      <img src="https://img.shields.io/github/package-json/v/username/restaurant-manager" alt="Version">
+    </a>
+  </p>
 </p>
 
 <p align="center">

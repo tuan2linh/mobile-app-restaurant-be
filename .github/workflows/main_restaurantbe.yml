@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write  # Cần quyền write để bump version
     
     steps:
       - uses: actions/checkout@v4
@@ -80,3 +80,35 @@ jobs:
           app-name: 'restaurantbe'
           slot-name: 'Production'
           package: release.zip
+
+  version-and-release:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PACKAGEJSON_DIR: '.'
+        with:
+          minor-wording: 'feat,feature'
+          major-wording: 'BREAKING,major'
+          patch-wording: 'fix,patch'
+          rc-wording: 'rc,beta,alpha'
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ steps.version-bump.outputs.newTag }}
+          name: Release ${{ steps.version-bump.outputs.newTag }}
+          generate_release_notes: true
